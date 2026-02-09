@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f8d7df, #e6cbd3);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .card {
+        background: #f4f1f2;
+        width: 80%;
+        max-width: 900px;
+        padding: 60px 40px;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        position: relative;
+    }
+
+    h1 {
+        font-size: 48px;
+        margin: 0;
+        color: #7a1c36;
+        font-weight: 800;
+    }
+
+    .name {
+        color: #e33c6e;
+    }
+
+    .hearts {
+        font-size: 40px;
+        margin: 20px 0 50px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        position: relative;
+        height: 100px;
+    }
+
+    button {
+        padding: 14px 40px;
+        font-size: 18px;
+        border-radius: 14px;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        position: relative;
+    }
+
+    .yes {
+        background: linear-gradient(135deg, #ff4d6d, #ff758f);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
+    }
+
+    .no {
+        background: #eee;
+        color: #7a1c36;
+        border: 1px solid #ddd;
+        position: absolute;
+        left: 60%;
+        top: 0;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .success h2 {
+        color: #e33c6e;
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    .success p {
+        font-size: 20px;
+        color: #a34b64;
+        margin-bottom: 25px;
+    }
+
+    .gif-container img {
+    width: 400px;        /* increased size */
+    max-width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+</style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+    <h1>
+        <span class="name" id="nameText">Monisha</span>,<br>
+        will you be my Valentine?
+    </h1>
+
+    <div class="hearts">💗 💞</div>
+
+    <div class="buttons" id="buttonArea">
+        <button class="yes" onclick="sayYes()">YES</button>
+        <button class="no" id="noBtn">Surely not!</button>
+    </div>
+</div>
+
+<div class="card hidden success" id="yesCard">
+    <h2>💖 YAY!!! 💖</h2>
+    <p>Happy Valentines Day 😘</p>
+
+    <!-- GIF section -->
+    <div class="gif-container">
+        <img src="https://i.pinimg.com/originals/de/c3/de/dec3de435f81b604f684576866a48731.gif" alt="Cute GIF">
+    </div>
+</div>
+
+<!-- Music -->
+<audio id="music" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4b6c2f9c6e.mp3?filename=romantic-background-11238.mp3"></audio>
+
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    // Get name from URL
+    const params = new URLSearchParams(window.location.search);
+    const valentineName = params.get("valentineName") || "Monisha";
+    document.getElementById("nameText").textContent = valentineName;
+
+    // NO button logic
+    const noBtn = document.getElementById("noBtn");
+    const buttonArea = document.getElementById("buttonArea");
+
+    const messages = [
+        "Please no 🥺",
+        "You’ll feel bad",
+        "Don’t do this",
+        "Think again",
+        "Last chance!",
+        "Are you sure?",
+        "My heart will break 💔",
+        "Say yes please",
+        "Be nice 😭"
+    ];
+
+    let index = 0;
+
+    noBtn.addEventListener("mouseover", () => {
+        // Change button text
+        noBtn.textContent = messages[index % messages.length];
+        index++;
+
+        // Move button randomly
+        const areaRect = buttonArea.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+
+        const maxX = areaRect.width - btnRect.width;
+        const maxY = areaRect.height - btnRect.height;
+
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        noBtn.style.left = newX + "px";
+        noBtn.style.top = newY + "px";
+    });
+
+    function sayYes() {
+        document.getElementById("mainCard").classList.add("hidden");
+        document.getElementById("yesCard").classList.remove("hidden");
+
+        // Play music
+        document.getElementById("music").play();
+
+        // Confetti
+        confetti({
+            particleCount: 200,
+            spread: 120,
+            origin: { y: 0.6 }
+        });
+    }
+</script>
+
+</body>
+</html>
